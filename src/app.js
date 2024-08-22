@@ -18,6 +18,7 @@ const sortBtn = document.getElementById("sortBtn");
 const originalSpot = document.getElementById("cardSpace");
 const sortSpot = document.getElementById("sortingSpace");
 let spotInner = "";
+let sortCount = 0;
 
 //listener de tipo click en el boton Draw
 drawBtn.addEventListener("click", function() {
@@ -52,7 +53,10 @@ function cardPrinter(spot) {
   //variable para generar cartas especiales A J Q K
   let cardN = "";
   //imprimiendo n cartas
-  spotInner += `<div class="row">`;
+  if (spot.id === "cardSpace")
+    spotInner += `<div class="row ms-3 mb-3"><h4>Original</h4>`;
+  else
+    spotInner += `<div class="d-flex flex-row align-items-center ms-3 mb-3"><h4 class="me-2">${sortCount}</h4>`;
   for (let i = 0; i < cardList.length; i++) {
     //switch que transforma a cartas especiales
     switch (cardList[i].number) {
@@ -73,7 +77,7 @@ function cardPrinter(spot) {
         break;
     }
     spotInner += `
-    <div class="card bg-white position-relative" style="border-radius:8px; width:80px; height:120px">
+    <div class="card bg-white position-relative m-1" style="border-radius:8px; width:80px; height:120px">
     
     <h3 class="position-absolute top-0 start-0 ms-2" style="color:${cardList[i].color.color}">
     ${cardList[i].color.symbol}
@@ -95,7 +99,8 @@ function cardPrinter(spot) {
 
 function selectSort() {
   let min = 0;
-  spotInner = "";
+  spotInner = `<div class="row ms-1"><h4>Sorted</h4></div>`;
+  sortCount = 0;
   while (min < cardList.length) {
     for (let i = min + 1; i < cardList.length; i++) {
       if (cardList[min].number > cardList[i].number) {
@@ -103,6 +108,7 @@ function selectSort() {
         cardList[min] = cardList[i];
         cardList[i] = aux;
         cardPrinter(sortSpot);
+        sortCount += 1;
       }
     }
     min++;
